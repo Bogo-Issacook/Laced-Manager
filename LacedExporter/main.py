@@ -146,7 +146,7 @@ class LacedSold:
                     break
                 else:
                     print(Fore.WHITE+'[checkSold] Successful Request - Parsing...')
-                    soup = BeautifulSoup(r.text, "html.parser")
+                    soup = BeautifulSoup(r.text, "lxml")
                     parse = soup.find_all('li',{'class':'list-item'})
                     #print(parse)
                    # await asyncio.sleep(100)
