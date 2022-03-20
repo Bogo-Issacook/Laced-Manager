@@ -169,8 +169,9 @@ class LacedSold:
                                             'producturl':product_id}
                                 
                             self.product_data.append(csv_data)
+
+                        print(Fore.CYAN+f'[checkSold][Page: {x}] Parse Successful!')
                         x+=1
-                        print(Fore.CYAN+'[checkSold] Parse Successful!')
                         soup.decompose()
                         #await asyncio.sleep(5)
                             

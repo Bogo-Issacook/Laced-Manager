@@ -66,7 +66,7 @@ class LacedSold:
 
     async def run(self) -> Union[None,bool]:
         while True:
-           async with httpx.AsyncClient(event_hooks={'response':[self.responseHandler]},http2=True,verify=False,timeout=httpx.Timeout(30.0, connect=10.0)) as self.session:
+           async with httpx.AsyncClient(event_hooks={'response':[self.responseHandler]},http2=False,verify=False,timeout=httpx.Timeout(30.0, connect=10.0)) as self.session:
                await self.tokenPull()
                if await self.logIn():
                    await self.checkSold()
