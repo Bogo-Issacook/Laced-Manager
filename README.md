@@ -4,7 +4,7 @@
 - Notify you of any new sales to Slack/Discord
 - Automatically get labels ready to print
 - Automatically Crop Labels for 4"x 6" Label Printers
-- Optional Automatic printing functionality
+- Optional Automatic label printing functionality
 
 ![laced sold](https://github.com/Bogo-Issacook/Laced-Manager/blob/main/laced_sold.PNG?raw=true)
 
