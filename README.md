@@ -13,7 +13,7 @@
 
 <img src="https://github.com/Bogo-Issacook/Laced-Manager/blob/main/laced_export.PNG?raw=true" width="800" height="400">
 
-## Laced Listing Updater (Coming Soon)
+## Laced Listing Updater (Coming Soon...)
 - Automatically Update the price of your listings
 
 ### To-Do List
