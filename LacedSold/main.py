@@ -146,7 +146,7 @@ class LacedSold:
         output = PdfFileWriter()
         path = f"{os.path.dirname(os.path.realpath(__file__))}/labels/{_id.split('/')[-1]}.pdf"
         output_path = f"{os.path.dirname(os.path.realpath(__file__))}/labels/{_id.split('/')[-1]}-cropped.pdf"
-        _input = PdfFileReader(open(path, 'rb'))
+        _input = PdfFileReader(open(path, 'rb')) #close?
         n = _input.getNumPages()
         for i in range(n):
           #print(i)
@@ -156,14 +156,14 @@ class LacedSold:
           #print(page.cropBox.getUpperRight())
           #print(page.cropBox.getUpperLeft())
           if i == 0: #packing slip
-            page.cropBox.lowerRight = (510,505) #x,0
+            page.cropBox.lowerRight = (510,490) #x,0
            # page.cropBox.lowerLeft = (0,0) #0,0
             page.cropBox.upperRight = (510,660) #x,y
-            page.cropBox.upperLeft = (85,660) #0, y
+            page.cropBox.upperLeft = (95,660) #0, y
           elif i == 1: #label
             page.cropBox.lowerRight = (545,240)
            # page.cropBox.lowerLeft = (25,240)
-            page.cropBox.upperRight = (545,520)
+            page.cropBox.upperRight = (550,520)
             page.cropBox.upperLeft = (31,550)
           else:
             pass
@@ -173,6 +173,26 @@ class LacedSold:
         output.write(outputStream) 
         outputStream.close()
         return True
+
+
+    '''async def printPdf(self, _id:str, printer_name="Munbyn ITPP941", secs=5) -> bool: #optional function.
+        cmd = r'2printer.exe' #you can use any client! adobe, etc.
+        path = f"{os.path.dirname(os.path.realpath(__file__))}/labels/{_id.split('/')[-1]}-cropped.pdf"
+        #print(path)
+        if cmd is None:
+            return False
+
+        cmd = '{} -src "{}" -prn "{}" -options silent:no alerts:no'.format(cmd, path, printer_name) #PUT OWN PRINTER HERE!#
+        #try:
+        proc = subprocess.Popen(cmd) #we should use asyncio.subprocess.exec, but ignoring as program is single task :)
+        try:
+            outs, errs = proc.communicate(timeout=10) #blocking func.
+        except TimeoutExpired:
+            proc.kill()
+            #outs, errs = proc.communicate()
+            return False
+        proc.kill()
+        return True'''
 
 
     async def postLabel(self, token, address_id, _id) -> bool:
@@ -303,11 +323,11 @@ class LacedSold:
                                                   'thumb_url': image,
                                                   #'footer_icon':'https://pbs.twimg.com/profile_images/1053258374572318724/ILdGLRUM_400x400.jpg',
                                                   'footer':"Laced Checker "+datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d [%H:%M:%S.%f')[:-3] + "]"}]}
-                                    print(await Utils.sendhook(slack_data,self.webhook,self.session))
+                                    #print(await Utils.sendhook(slack_data,self.webhook,self.session)) may cause fake pings if page x items go to page 1.
                                     getaddy = await self.getAddressID(product_id)
                                     if getaddy:
                                         if await self.postLabel(**getaddy):
-                                            await self.cropPdf(product_id)
+                                            print(await Utils.sendhook(slack_data,self.webhook,self.session))
                                             slack_data = {'attachments': [
                                                  {'title':f'Successfully Initiated Label!',
                                                   'text':f'Labels saved in ./labels!',
@@ -317,6 +337,13 @@ class LacedSold:
                                                  # 'footer_icon':'https://pbs.twimg.com/profile_images/1053258374572318724/ILdGLRUM_400x400.jpg',
                                                   'footer':"Laced Label "+datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d [%H:%M:%S.%f')[:-3] + "]"}]}
                                             print(await Utils.sendhook(slack_data,self.webhook,self.session))
+                                            
+                                            if await self.cropPdf(product_id):
+                                                #if await self.printPdf(product_id): optional function call here.
+                                                pass
+                                            else:
+                                                continue
+
                                         else:
                                             continue
                                     else:
@@ -395,7 +422,7 @@ class Utils:
             return {
                 "username":"",
                 "password":"",
-                "webhook":""}
+                "webhook":"webhook not used!"}
 
     @staticmethod
     def jsonloader():
