@@ -1,5 +1,11 @@
 # ![laced header](https://www.laced.co.uk/assets/logo-dbae9172089175cf83982122e506000a0aabd227d8696e3852bea61aa5baf7b4.svg "Designed to make your selling experience on Laced as smooth as possible") **`Manager`**
 **Laced Manager** is a Fully Asynchronous Python project designed to make your Laced selling experience as smooth as possible
+
+## Using Laced Manager
+```console
+$ pip3 install -r requirements.txt
+```
+
 ## Laced Sold
 - Notify you of any new sales to Slack/Discord
 - Automatically get labels ready to print
