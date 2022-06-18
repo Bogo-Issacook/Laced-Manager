@@ -27,7 +27,7 @@
 ##
 [laced-url]: https://www.laced.co.uk
 ***This project is NOT affiliated with [Laced Europe LTD 09541333][laced-url]***</br>
-***This project does NOT break any [Laced Europe LTD 09541333][laced-url] Terms of Service (TOS)***
+***This project does NOT break any [Laced Europe LTD 09541333][laced-url] Terms of Service (TOS)***</br>
 ***This project is made purely for educational purposes***
 ###
 [issacook-twitter]: https://twitter.com/IssaCookEU
