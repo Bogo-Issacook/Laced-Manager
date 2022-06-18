@@ -134,6 +134,10 @@ class LacedSold:
         print(Fore.YELLOW+f'[checkSold] {self.total_completed} Items Sold...')
         pages = await self.pullPagecount(self.total_completed)
         pages = math.floor(pages)
+        if pages > 50:
+            pages = 50
+            print(Fore.YELLOW+f'[checkSold] Laced Does not allow us to view more than 50 pages!')
+        else:pass
        # print(pages)
         x = 1
         while x <= pages:
