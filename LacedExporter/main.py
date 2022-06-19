@@ -332,7 +332,7 @@ class Utils:
             return {
                 "username":"",
                 "password":"",
-                "webhook":""}
+                "webhook":"webhook not used"}
 
     @staticmethod
     def jsonloader():
