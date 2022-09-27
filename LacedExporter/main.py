@@ -7,6 +7,7 @@ import typing
 from typing import Union
 import httpx
 import json
+import html
 import re
 import csv
 import math
@@ -151,18 +152,19 @@ class LacedSold:
                 else:
                     print(Fore.WHITE+'[checkSold] Successful Request - Parsing...')
                     soup = BeautifulSoup(r.text, "lxml")
-                    parse = soup.find_all('li',{'class':'list-item'})
+                    parse = soup.find_all('div',{'data-react-class':'ListItemSale'})
                     #print(parse)
                    # await asyncio.sleep(100)
                     if parse:
                         for item in parse:
-                            product_id = 'https://www.laced.co.uk'+item.find('div',{'class':'list-item__actions'}).find('a',{'class':'list-item__actions--link'})['href']
+                            item = json.loads(html.unescape(item['data-react-props']))
+                            product_id = 'https://www.laced.co.uk'+item['actions'][0]['href']
                             #if product_id not in self.products_sold:
-                            name = item.find('img')['alt']
-                            image = item.find('img')['src']
-                            price = item.find('div',{'class':'list-item__stats__inner--info'}).text.rstrip().lstrip()[1:]
+                            name = item['title']['label']
+                            image = item['imageUrl']
+                            price = item['price'].rstrip().lstrip()[1:]
                             net_price = await self.netPrice(int(price))
-                            size = item.find('span',{'class':'list-item__info text-info'}).text
+                            size = item['info']
                             fees = int(price) - net_price
                             csv_data = {'name':name,
                                             'size':size,
