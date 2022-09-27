@@ -287,7 +287,7 @@ class LacedSold:
                 else:
                     print(Fore.WHITE+'[checkSold] Successful Request - Parsing...')
                     soup = BeautifulSoup(r.text, "lxml")
-                    parse = soup.find_all('li',{'class':'list-item'})
+                    parse = soup.find_all('div',{'data-react-class':'ListItemSale'})
                     try:
                         total_pending = self.total_pending_parse.search(r.text).group(1)
                     except AttributeError:
@@ -297,16 +297,17 @@ class LacedSold:
                    # await asyncio.sleep(100)
                     if parse:
                         for item in parse:
-                            product_id = item.find('div',{'class':'list-item__actions'}).find('a',{'class':'list-item__actions--link'})['href']
+                            item = json.loads(html.unescape(item['data-react-props']))
+                            product_id = item['actions'][0]['href']
                             if product_id not in self.products_sold:
                                 self.products_sold.append(product_id)
                                 if self.attempt > 0:
-                                    name = item.find('img')['alt']
-                                    image = item.find('img')['src']
-                                    price = item.find('div',{'class':'list-item__stats__inner--info'}).text.rstrip().lstrip()[1:]
+                                    name = item['title']['label']
+                                    image = item['imageUrl']
+                                    price = item['price'].rstrip().lstrip()[1:]
                                     net_price = await self.netPrice(int(price))
                                     sale_url = f'https://www.laced.co.uk{product_id}'
-                                    size = item.find('span',{'class':'list-item__info text-info'}).text
+                                    size = item['info']
                                     slack_data = {'attachments': [
                                                  {'title':f'{name} -> {size}',
                                                   #'text':f'Site Name -> {self.site_hook}',
